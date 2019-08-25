@@ -2,6 +2,7 @@
   "name": "chockabox",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:4000",
   "dependencies": {
     "@apollo/react-ssr": "^3.0.0",
     "apollo-boost": "^0.4.4",
@@ -17,6 +18,7 @@
     "react-apollo": "^3.0.0",
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.0",
+    "serialize-javascript": "^1.8.0",
     "webpack-node-externals": "^1.7.2"
   },
   "scripts": {

@@ -3,18 +3,18 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 
 import ApolloClient from "apollo-boost";
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import App from './App';
 
 const options = {};
 
-if (process.env.NODE_ENV !== 'production')
+if (window.__APOLLO_STATE__)
 {
-    options.uri = 'http://localhost:4000/graphql';
+    options.cache = new InMemoryCache().restore(window.__APOLLO_STATE__);
 }
 
 const client = new ApolloClient(options);
-
 const root = document.getElementById('root');
 const app = <App client={client}/>;
 
