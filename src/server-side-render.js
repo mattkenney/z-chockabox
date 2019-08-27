@@ -9,17 +9,12 @@ import { getDataFromTree } from '@apollo/react-ssr';
 import { makeExecutableSchema } from 'graphql-tools';
 
 import App from './App';
-import { typeDefs, resolvers } from './schema';
-
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers,
-});
+import * as schema from './schema';
 
 export default function () {
   const client = new ApolloClient({
     cache: new InMemoryCache(),
-    link: new SchemaLink({ schema }),
+    link: new SchemaLink({ schema: makeExecutableSchema(schema) }),
     ssrMode: true
   });
 

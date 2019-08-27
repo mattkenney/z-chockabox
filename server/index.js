@@ -27,7 +27,7 @@ server.applyMiddleware({ app, cors: false });
 
 // server-side render React app
 const fs = require('fs');
-const ssr = require('../dist/ssr').default;
+const ssr = require('../dist/server-side-render').default;
 const template = path.join(build, 'index.html');
 const root = '<div id="root">';
 const [ prelude, coda ] = fs.readFileSync(template, 'utf8').split(root, 2);
