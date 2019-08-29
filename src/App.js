@@ -2,7 +2,7 @@ import React from 'react';
 
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import { Route, Switch } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 
 const query = gql`query{hello}`;
 
@@ -23,9 +23,15 @@ function Home() {
 export default function App(props)
 {
   return (
-    <Switch>
+    <div>
+      <div>
+        <div><Link to="/">Home</Link></div>
+        <div><Link to="/about">About</Link></div>
+      </div>
+      <Switch>
         <Route path="/about" component={About}/>
         <Route component={Home}/>
-    </Switch>
+      </Switch>
+    </div>
   );
 }
