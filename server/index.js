@@ -33,7 +33,7 @@ const root = '<div id="root">';
 const [ prelude, coda ] = fs.readFileSync(template, 'utf8').split(root, 2);
 
 app.use(function (req, res) {
-  ssr().then(content => {
+  ssr(req).then(content => {
     const html = [ prelude, root, content, coda ].join('');
     res.send(html);
   });

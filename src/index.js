@@ -4,6 +4,7 @@ import * as serviceWorker from './serviceWorker';
 
 import ApolloClient from "apollo-boost";
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { BrowserRouter } from "react-router-dom";
 
 import App from './App';
 
@@ -16,7 +17,11 @@ if (window.__APOLLO_STATE__)
 
 const client = new ApolloClient(options);
 const root = document.getElementById('root');
-const app = <App client={client}/>;
+const app = (
+  <BrowserRouter>
+    <App client={client}/>
+  </BrowserRouter>
+);
 
 if (root.firstChild) {
   ReactDOM.hydrate(app, root);
