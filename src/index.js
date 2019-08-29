@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 
 import ApolloClient from "apollo-boost";
+import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { BrowserRouter } from "react-router-dom";
 
@@ -17,10 +18,13 @@ if (window.__APOLLO_STATE__)
 
 const client = new ApolloClient(options);
 const root = document.getElementById('root');
+
 const app = (
-  <BrowserRouter>
-    <App client={client}/>
-  </BrowserRouter>
+  <ApolloProvider client={client}>
+    <BrowserRouter>
+      <App/>
+    </BrowserRouter>
+  </ApolloProvider>
 );
 
 if (root.firstChild) {
