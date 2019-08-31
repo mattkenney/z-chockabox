@@ -3,6 +3,15 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { Link, Route, Switch } from 'react-router-dom';
+import {
+    Container,
+    Navbar,
+    NavbarBrand,
+    NavbarItem,
+    NavbarMenu,
+    Section
+  } from 'bloomer';
+import './App.sass';
 
 const query = gql`query{hello}`;
 
@@ -20,18 +29,33 @@ function Home() {
   );
 }
 
-export default function App(props)
-{
+function Nav() {
   return (
-    <div>
-      <div>
-        <div><Link to="/">Home</Link></div>
-        <div><Link to="/about">About</Link></div>
-      </div>
-      <Switch>
-        <Route path="/about" component={About}/>
-        <Route component={Home}/>
-      </Switch>
-    </div>
+    <Navbar>
+      <NavbarBrand>
+        <NavbarItem><Link to="/">Chockabox</Link></NavbarItem>
+      </NavbarBrand>
+      <NavbarMenu isActive={true}>
+        <NavbarItem><Link to="/about">About</Link></NavbarItem>
+      </NavbarMenu>
+    </Navbar>
   );
+}
+
+function Content() {
+  return (
+    <Section>
+      <Container>
+        <Switch>
+          <Route path="/about" component={About}/>
+          <Route component={Home}/>
+        </Switch>
+      </Container>
+    </Section>
+  );
+}
+
+export default function App()
+{
+  return <div><Nav/><Content/></div>;
 }

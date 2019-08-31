@@ -33,7 +33,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.css$/,
+        test: /\.(css|sass)$/,
         use: [ 'ignore-loader' ]
       }
     ]

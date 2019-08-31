@@ -4,26 +4,29 @@
   "private": true,
   "proxy": "http://localhost:4000",
   "dependencies": {
-    "@apollo/react-ssr": "^3.0.0",
+    "@apollo/react-ssr": "^3.0.1",
     "apollo-boost": "^0.4.4",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",
     "apollo-link-schema": "^1.2.3",
-    "apollo-server-express": "^2.8.1",
-    "graphql": "^14.4.2",
+    "apollo-server-express": "^2.9.2",
+    "bloomer": "^0.6.5",
+    "bulma": "^0.7.5",
+    "graphql": "^14.5.4",
     "graphql-tag": "^2.10.1",
     "graphql-tools": "^4.0.5",
-    "passwordless-cassandra-store": "github:mattkenney/passwordless-cassandra-store",
+    "ignore-loader": "^0.1.2",
+    "node-sass": "^4.12.0",
     "react": "^16.9.0",
-    "react-apollo": "^3.0.0",
+    "react-apollo": "^3.0.1",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.0",
-    "serialize-javascript": "^1.8.0",
+    "serialize-javascript": "^1.9.0",
     "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -47,6 +50,6 @@
   },
   "devDependencies": {
     "nodemon": "^1.19.1",
-    "webpack-cli": "^3.3.6"
+    "webpack-cli": "^3.3.7"
   }
 }
