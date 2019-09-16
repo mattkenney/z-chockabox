@@ -11,6 +11,9 @@ import {
     NavbarMenu,
     Section
   } from 'bloomer';
+
+import Errors from './components/Errors';
+import Login from './views/Login';
 import './App.sass';
 
 const query = gql`query{hello}`;
@@ -22,9 +25,11 @@ function About() {
 function Home() {
   return (
     <Query query={query}>
-      {({ loading, error, data }) =>
-        data && !loading ? <div>{`Hello ${data.hello}!`}</div> : null
-      }
+      {({ loading, error, data }) => {
+        if (error) return <Errors error={error}/>;
+        if (loading || !data) return null;
+        return <div>{`Hello ${data.hello}!`}</div>;
+      }}
     </Query>
   );
 }
@@ -48,6 +53,7 @@ function Content() {
       <Container>
         <Switch>
           <Route path="/about" component={About}/>
+          <Route path="/login" component={Login}/>
           <Route component={Home}/>
         </Switch>
       </Container>

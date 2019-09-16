@@ -19,10 +19,21 @@ const path = require('path');
 const build = path.join(path.dirname(__dirname), 'build');
 app.use(express.static(build, { index: false, redirect: false }));
 
+// set up auth
+const config = require('../config.json');
+app.use(require('cookie-session')(config.session));
+const sendToken = require('./auth')(app);
+
 // set up GraphQL
 const { ApolloServer } = require('apollo-server-express');
-const schema = require('../dist/schema');
-const server = new ApolloServer(schema);
+const typeDefs = require('./typeDefs');
+const resolvers = require('./resolvers');
+resolvers.Mutation.sendToken = sendToken;
+const server = new ApolloServer({
+  context: ({ req }) => ({ user: req.user }),
+  resolvers,
+  typeDefs
+});
 server.applyMiddleware({ app, cors: false });
 
 // server-side render React app
@@ -33,10 +44,21 @@ const root = '<div id="root">';
 const [ prelude, coda ] = fs.readFileSync(template, 'utf8').split(root, 2);
 
 app.use(function (req, res) {
-  ssr(req).then(content => {
-    const html = [ prelude, root, content, coda ].join('');
-    res.send(html);
-  });
+  ssr(req)
+    .then(content => {
+      const html = [ prelude, root, content, coda ].join('');
+      res.send(html);
+    })
+    .catch(error => {
+      // code = error.graphQLErrors[0].extensions.code
+      const code = ['graphQLErrors',0,'extensions','code'].reduce((obj,key)=>obj&&obj[key],error);
+      if (code === 'UNAUTHENTICATED')
+      {
+          return res.redirect('/login');
+      }
+      res.status(500).send(String(err));
+    })
+  ;
 });
 
 // ready to serve

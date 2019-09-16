@@ -1,11 +1,12 @@
+'use strict';
+
 const path = require('path');
 
 var nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   entry: {
-    schema: './src/schema.js',
-    'server-side-render': './src/server-side-render.js'
+    'server-side-render': './server/server-side-render.js'
   },
   output: {
     libraryTarget: 'commonjs2',
