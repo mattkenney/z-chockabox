@@ -6,6 +6,7 @@ const CassandraStore = require('passwordless-cassandra-store');
 const email = require("emailjs");
 const passwordless = require('passwordless');
 const config = require('../config.json').auth;
+const smtp = email.server.connect(config.smtp);
 
 passwordless.init(new CassandraStore(config.store), config.passwordless);
 
@@ -24,6 +25,14 @@ passwordless.addDelivery(function (token, uid, to, callback) {
   });
 });
 
+const requestToken = passwordless.requestToken((user, delivery, callback) => {
+    const norm = (typeof user === 'string') && user.trim().toLowerCase();
+    const hmac = norm && crypto.createHmac(config.hmac.algorithm, config.hmac.key);
+    if (hmac) hmac.update(norm);
+    const uid = hmac && hmac.digest('hex');
+    callback(null, uid ? uid : null);
+  });
+
 module.exports = function (app) {
   app.use(passwordless.sessionSupport());
 
@@ -32,16 +41,12 @@ module.exports = function (app) {
     successRedirect: '/'
   }));
 
-  return () => {
-    return new Promise(resolve => {
-      passwordless.requestToken((user, delivery, callback) => {
-        const norm = (typeof user === 'string') && user.trim().toLowerCase();
-        const hmac = norm && crypto.createHmac(config.hmac.algorithm, config.hmac.key);
-        if (hmac) hmac.update(norm);
-        const uid = hmac && hmac.digest('hex');
-        callback(null, uid ? uid : null);
-        resolve(true);
-      });
+  return (obj, args, context, info) => {
+    const user = args.email;
+    if (!user) return;
+    return new Promise((resolve, reject) => {
+      const req = { body: { user }, method: 'POST' };
+      requestToken(req, null, err => err ? reject(err) : resolve(true));
     })
   };
 };
