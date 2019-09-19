@@ -21,14 +21,14 @@ export default function Login() {
       sendToken({ variables: { email: form.elements.email.value } });
     }
     return (
-      <form action="/login" method="post" onSubmit={onSubmit} ref={ref => form = ref}>
+      <form action='/login' method='post' onSubmit={onSubmit} ref={ref => form = ref}>
         <Field>
           <Label>Email Address</Label>
           <Control>
-            <Input name="email" type="email" placeholder='jdoe@example.com' />
+            <Input name='email' type='email' placeholder='jdoe@example.com' />
           </Control>
         </Field>
-        <Button/>
+        <Button isColor='primary' type='submit'>Send Link</Button>
       </form>
     );
 }

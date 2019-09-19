@@ -10,12 +10,12 @@ const smtp = email.server.connect(config.smtp);
 
 passwordless.init(new CassandraStore(config.store), config.passwordless);
 
-passwordless.addDelivery(function (token, uid, to, callback) {
-  const authority = 'http://localhost:3000';
+passwordless.addDelivery(function (token, uid, to, callback, req) {
+  const origin = config.origin || req.origin;
   const tokenParam = encodeURIComponent(token);
   const uidParam = encodeURIComponent(uid);
-  const text = `${authority}?token=${tokenParam}&uid=${uidParam}`;
-  const html = `<a href="${authority}?token=${tokenParam}&amp;uid=${uidParam}">log in</a>`;
+  const text = `${origin}?token=${tokenParam}&uid=${uidParam}`;
+  const html = `<a href="${origin}?token=${tokenParam}&amp;uid=${uidParam}">log in</a>`;
   const attachment = [{ data: html, alternative: true }];
   const email = Object.assign({ attachment, text, to }, config.email);
   smtp.send(email, function (err, message)
@@ -45,7 +45,11 @@ module.exports = function (app) {
     const user = args.email;
     if (!user) return;
     return new Promise((resolve, reject) => {
-      const req = { body: { user }, method: 'POST' };
+      const req = {
+        body: { user },
+        method: 'POST',
+        origin: context.origin
+      };
       requestToken(req, null, err => err ? reject(err) : resolve(true));
     })
   };

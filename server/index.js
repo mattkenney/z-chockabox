@@ -2,10 +2,13 @@
 
 'use strict';
 
+const config = require('../config.json');
+
 // set up Express
 const express = require('express');
 const app = new express();
 app.disable('x-powered-by');
+app.set('trust proxy', config.trustProxy);
 
 // we do not want to serve the empty template directly
 // so redirect to /
@@ -20,7 +23,6 @@ const build = path.join(path.dirname(__dirname), 'build');
 app.use(express.static(build, { index: false, redirect: false }));
 
 // set up auth
-const config = require('../config.json');
 app.use(require('cookie-session')(config.session));
 const sendToken = require('./auth')(app);
 
@@ -30,7 +32,10 @@ const typeDefs = require('./typeDefs');
 const resolvers = require('./resolvers');
 resolvers.Mutation.sendToken = sendToken;
 const server = new ApolloServer({
-  context: ({ req }) => ({ user: req.user }),
+  context: ({ req }) => ({
+      origin: req.protocol + '://' + req.get('host'),
+      user: req.user
+  }),
   resolvers,
   typeDefs
 });

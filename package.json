@@ -2,7 +2,6 @@
   "name": "chockabox",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:4000",
   "dependencies": {
     "@apollo/react-ssr": "^3.0.1",
     "@types/react": "^16.9.2",
@@ -21,6 +20,7 @@
     "graphql": "^14.5.4",
     "graphql-tag": "^2.10.1",
     "graphql-tools": "^4.0.5",
+    "http-proxy-middleware": "^0.20.0",
     "ignore-loader": "^0.1.2",
     "node-sass": "^4.12.0",
     "passwordless": "^1.1.3",
