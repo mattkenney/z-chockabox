@@ -6,7 +6,7 @@ var nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   entry: {
-    'server-side-render': './server/server-side-render.js'
+    'server-side-render': './src/server-side-render.js'
   },
   output: {
     libraryTarget: 'commonjs2',

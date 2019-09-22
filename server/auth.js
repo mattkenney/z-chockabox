@@ -50,7 +50,7 @@ module.exports = function (app) {
         method: 'POST',
         origin: context.origin
       };
-      requestToken(req, null, err => err ? reject(err) : resolve(true));
+      requestToken(req, null, err => err ? reject(err) : resolve(user));
     })
   };
 };

@@ -28,16 +28,17 @@ const sendToken = require('./auth')(app);
 
 // set up GraphQL
 const { ApolloServer } = require('apollo-server-express');
+const { makeExecutableSchema } = require('graphql-tools');
 const typeDefs = require('./typeDefs');
 const resolvers = require('./resolvers');
 resolvers.Mutation.sendToken = sendToken;
+const schema = makeExecutableSchema({ typeDefs, resolvers });
 const server = new ApolloServer({
   context: ({ req }) => ({
       origin: req.protocol + '://' + req.get('host'),
       user: req.user
   }),
-  resolvers,
-  typeDefs
+  schema
 });
 server.applyMiddleware({ app, cors: false });
 
@@ -48,8 +49,9 @@ const template = path.join(build, 'index.html');
 const root = '<div id="root">';
 const [ prelude, coda ] = fs.readFileSync(template, 'utf8').split(root, 2);
 
+app.use(require('body-parser').urlencoded({ extended: false }));
 app.use(function (req, res) {
-  ssr(req)
+  ssr(schema, req)
     .then(content => {
       const html = [ prelude, root, content, coda ].join('');
       res.send(html);

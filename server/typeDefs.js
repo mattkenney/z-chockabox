@@ -6,6 +6,6 @@ module.exports = `
     err: Boolean
   }
   type Mutation {
-    sendToken(email: String!): Boolean
+    sendToken(email: String!): String
   }
 `;

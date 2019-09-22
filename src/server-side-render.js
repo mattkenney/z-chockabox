@@ -10,24 +10,30 @@ import { StaticRouter } from "react-router-dom";
 import { getDataFromTree } from '@apollo/react-ssr';
 import { makeExecutableSchema } from 'graphql-tools';
 
-import App from '../src//App';
-import resolvers from './resolvers';
-import typeDefs from './typeDefs';
+import App from './App';
 
-const schema = makeExecutableSchema({ typeDefs, resolvers });
+export default function (schema, req) {
+  const context = {
+    origin: req.protocol + '://' + req.get('host'),
+    user: req.user
+  };
 
-export default function (req) {
   const client = new ApolloClient({
     cache: new InMemoryCache(),
-    link: new SchemaLink({ schema }),
+    defaultOptions: {
+      mutate: {
+        context: {
+          body: (req.method === 'POST') ? req.body : null,
+        }
+      }
+    },
+    link: new SchemaLink({ context, schema }),
     ssrMode: true
   });
 
-  const context = {};
-
   const app = (
     <ApolloProvider client={client}>
-      <StaticRouter location={req.url} context={context}>
+      <StaticRouter location={req.url}>
         <App/>
       </StaticRouter>
     </ApolloProvider>
