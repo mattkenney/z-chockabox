@@ -63,7 +63,7 @@ app.use(function (req, res) {
       {
           return res.redirect('/login');
       }
-      res.status(500).send(String(err));
+      res.status(500).send(String(error));
     })
   ;
 });
