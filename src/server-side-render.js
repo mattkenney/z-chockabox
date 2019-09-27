@@ -11,6 +11,7 @@ import { getDataFromTree } from '@apollo/react-ssr';
 import { makeExecutableSchema } from 'graphql-tools';
 
 import App from './App';
+import { MutationFormProvider, waitForMutation } from './components/MutationForm';
 
 export default function (schema, req) {
   const context = {
@@ -20,13 +21,6 @@ export default function (schema, req) {
 
   const client = new ApolloClient({
     cache: new InMemoryCache(),
-    defaultOptions: {
-      mutate: {
-        context: {
-          body: (req.method === 'POST') ? req.body : null,
-        }
-      }
-    },
     link: new SchemaLink({ context, schema }),
     ssrMode: true
   });
@@ -34,16 +28,20 @@ export default function (schema, req) {
   const app = (
     <ApolloProvider client={client}>
       <StaticRouter location={req.url}>
-        <App/>
+        <MutationFormProvider request={req}>
+          <App/>
+        </MutationFormProvider>
       </StaticRouter>
     </ApolloProvider>
   );
 
-  return getDataFromTree(app).then(() => [
-    '<script>',
-    'window.__APOLLO_STATE__=',
-    serialize(client.extract()),
-    '</script>',
-    ReactDOMServer.renderToString(app)
-  ].join(''));
+  return getDataFromTree(app)
+    .then(() => waitForMutation(req))
+    .then(() => [
+      '<script>',
+      'window.__APOLLO_STATE__=',
+      serialize(client.extract()),
+      '</script>',
+      ReactDOMServer.renderToString(app)
+    ].join(''));
 }
