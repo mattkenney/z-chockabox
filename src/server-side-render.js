@@ -8,7 +8,6 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { SchemaLink } from 'apollo-link-schema';
 import { StaticRouter } from "react-router-dom";
 import { getDataFromTree } from '@apollo/react-ssr';
-import { makeExecutableSchema } from 'graphql-tools';
 
 import App from './App';
 import { MutationFormProvider, waitForMutation } from './components/MutationForm';

@@ -30,7 +30,8 @@ module.exports = {
             options: {
               presets: ['@babel/env', '@babel/react']
             }
-          }
+          },
+          { loader: 'eslint-loader' }
         ]
       },
       {

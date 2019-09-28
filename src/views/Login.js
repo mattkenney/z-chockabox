@@ -1,7 +1,6 @@
 import React from 'react';
 
 import gql from 'graphql-tag';
-import MutationForm from '../components/MutationForm';
 import {
   Button,
   Control,
@@ -10,20 +9,20 @@ import {
   Label
 } from 'bloomer';
 
+import Errors from '../components/Errors';
+import MutationForm from '../components/MutationForm';
+
 const SEND_TOKEN = gql`mutation sendToken($email: String!) { sendToken(email: $email) }`;
 
-export default class Login extends React.Component {
-  render() {
-    if (this.result) {
-      return <LoginSent data={this.result.data}/>;
-    }
-    return (
-      <MutationForm mutation={SEND_TOKEN}>{(mutate, { client, loading, data }) => {
-        if (data) return <LoginSent data={data}/>;
-        return <LoginForm mutate={mutate}/>;
-      }}</MutationForm>
-    );
-  }
+export default function Login() {
+  return (
+    <MutationForm mutation={SEND_TOKEN}>{(mutate, { loading, error, data }) => {
+      if (loading) return null;
+      if (error) return <Errors error={error}/>;
+      if (data) return <LoginSent data={data}/>;
+      return <LoginForm mutate={mutate}/>;
+    }}</MutationForm>
+  );
 }
 
 function LoginForm({ mutate }) {
@@ -41,5 +40,5 @@ function LoginForm({ mutate }) {
 }
 
 function LoginSent({ data }) {
-    return <div>{`Login link sent to ${data.sendToken}`}</div>;
+  return <div>{`Login link sent to ${data.sendToken}`}</div>;
 }

@@ -43,8 +43,8 @@ module.exports = function (app) {
 
   return (obj, args, context, info) => {
     const user = args.email;
-    if (!user) return;
     return new Promise((resolve, reject) => {
+      if (!user) return reject(new Error('Email address is required'));
       const req = {
         body: { user },
         method: 'POST',

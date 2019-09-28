@@ -31,9 +31,8 @@ class FormImpl extends React.Component {
     );
   }
 }
-const Form = withRouter(FormImpl);
 
-const MutationFormContext = React.createContext({});
+const Form = withRouter(FormImpl);
 
 export default class MutationForm extends React.Component {
   constructor(props) {
@@ -93,7 +92,8 @@ export default class MutationForm extends React.Component {
     );
   }
 };
-MutationForm.contextType = MutationFormContext;
+
+const MutationFormContext = MutationForm.contextType = React.createContext({});
 
 export function MutationFormProvider(props) {
   return (
