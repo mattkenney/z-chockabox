@@ -49,7 +49,7 @@ const template = path.join(build, 'index.html');
 const root = '<div id="root">';
 const [ prelude, coda ] = fs.readFileSync(template, 'utf8').split(root, 2);
 
-app.use(require('body-parser').urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 app.use(function (req, res) {
   ssr(schema, req)
     .then(content => {

@@ -103,7 +103,6 @@ export function MutationFormProvider(props) {
   );
 };
 
-export function waitForMutation(req)
-{
-  return (req._mutation_promise || Promise.resolve());
+export function waitForMutation(context) {
+  return (context._mutation_promise || Promise.resolve());
 };

@@ -3,9 +3,12 @@
 const crypto = require('crypto');
 
 const CassandraStore = require('passwordless-cassandra-store');
+const EmailValidator = require("email-validator");
 const email = require("emailjs");
 const passwordless = require('passwordless');
+
 const config = require('../config.json').auth;
+
 const smtp = email.server.connect(config.smtp);
 
 passwordless.init(new CassandraStore(config.store), config.passwordless);
@@ -26,9 +29,8 @@ passwordless.addDelivery(function (token, uid, to, callback, req) {
 });
 
 const requestToken = passwordless.requestToken((user, delivery, callback) => {
-    const norm = (typeof user === 'string') && user.trim().toLowerCase();
-    const hmac = norm && crypto.createHmac(config.hmac.algorithm, config.hmac.key);
-    if (hmac) hmac.update(norm);
+    const hmac = user && crypto.createHmac(config.hmac.algorithm, config.hmac.key);
+    if (hmac) hmac.update(user);
     const uid = hmac && hmac.digest('hex');
     callback(null, uid ? uid : null);
   });
@@ -41,16 +43,19 @@ module.exports = function (app) {
     successRedirect: '/'
   }));
 
-  return (obj, args, context, info) => {
-    const user = args.email;
+  return function (obj, args, context) {
     return new Promise((resolve, reject) => {
-      if (!user) return reject(new Error('Email address is required'));
-      const req = {
-        body: { user },
-        method: 'POST',
-        origin: context.origin
-      };
-      requestToken(req, null, err => err ? reject(err) : resolve(user));
-    })
+      const user = args.email && String(args.email).trim().toLowerCase();
+      if (EmailValidator.validate(user)) {
+        const req = {
+          body: { user },
+          method: 'POST',
+          origin: context.origin
+        };
+        requestToken(req, null, err => err ? reject(err) : resolve(user));
+      } else {
+        reject(new Error('A valid email address is required'));
+      }
+    });
   };
 };

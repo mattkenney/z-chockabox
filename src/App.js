@@ -12,6 +12,7 @@ import {
     Section
   } from 'bloomer';
 
+import Decks from './views/Decks';
 import Errors from './components/Errors';
 import Login from './views/Login';
 import './App.sass';
@@ -41,6 +42,7 @@ function Nav() {
         <NavbarItem><Link to="/">Chockabox</Link></NavbarItem>
       </NavbarBrand>
       <NavbarMenu isActive={true}>
+        <NavbarItem><Link to="/deck">Decks</Link></NavbarItem>
         <NavbarItem><Link to="/about">About</Link></NavbarItem>
       </NavbarMenu>
     </Navbar>
@@ -53,6 +55,7 @@ function Content() {
       <Container>
         <Switch>
           <Route path="/about" component={About}/>
+          <Route path="/deck" component={Decks}/>
           <Route path="/login" component={Login}/>
           <Route component={Home}/>
         </Switch>
