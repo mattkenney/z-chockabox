@@ -1,13 +1,8 @@
 import React from 'react';
 
 import gql from 'graphql-tag';
-import {
-  Button,
-  Control,
-  Field,
-  Input,
-  Label
-} from 'bloomer';
+import Button from 'react-bulma-components/lib/components/button';
+import { Field, Control, Label, Input } from 'react-bulma-components/lib/components/form';
 
 import Errors from '../components/Errors';
 import MutationForm from '../components/MutationForm';
@@ -25,18 +20,31 @@ export default function Login() {
   );
 }
 
-function LoginForm({ mutate }) {
-  return (
-    <div>
-      <Field>
-        <Label>Email Address</Label>
-        <Control>
-          <Input name='email' type='email' placeholder='jdoe@example.com' />
-        </Control>
-      </Field>
-      <Button isColor='primary' type='submit'>Send Login Link</Button>
-    </div>
-  );
+class LoginForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    return (
+      <div>
+        <Field>
+          <Label>Email Address</Label>
+          <Control>
+            <Input
+              name='email'
+              onChange={evt => this.setState({ email: evt.target.value })}
+              placeholder='jdoe@example.com'
+              type='email'
+              value={this.state.email}
+            />
+          </Control>
+        </Field>
+        <Button color='primary' type='submit'>Send Login Link</Button>
+      </div>
+    );
+  }
 }
 
 function LoginSent({ data }) {

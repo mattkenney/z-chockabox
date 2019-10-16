@@ -13,7 +13,9 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   target: 'node',
-  externals: [nodeExternals()],
+  externals: [nodeExternals({ whitelist: [
+    /^react-bulma-components(\/|$)/
+  ]})],
   node: {
     __dirname: false,
     __filename: false

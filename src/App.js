@@ -1,16 +1,11 @@
 import React from 'react';
 
+import Container from 'react-bulma-components/lib/components/container';
+import Navbar from 'react-bulma-components/lib/components/navbar';
+import Section from 'react-bulma-components/lib/components/section';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
 import { Link, Route, Switch } from 'react-router-dom';
-import {
-    Container,
-    Navbar,
-    NavbarBrand,
-    NavbarItem,
-    NavbarMenu,
-    Section
-  } from 'bloomer';
+import { Query } from 'react-apollo';
 
 import Decks from './views/Decks';
 import Errors from './components/Errors';
@@ -38,13 +33,15 @@ function Home() {
 function Nav() {
   return (
     <Navbar>
-      <NavbarBrand>
-        <NavbarItem><Link to="/">Chockabox</Link></NavbarItem>
-      </NavbarBrand>
-      <NavbarMenu isActive={true}>
-        <NavbarItem><Link to="/deck">Decks</Link></NavbarItem>
-        <NavbarItem><Link to="/about">About</Link></NavbarItem>
-      </NavbarMenu>
+      <Navbar.Brand>
+        <Navbar.Item><Link to="/">Chockabox</Link></Navbar.Item>
+      </Navbar.Brand>
+      <Navbar.Menu>
+        <Navbar.Container>
+          <Navbar.Item><Link to="/deck">Decks</Link></Navbar.Item>
+          <Navbar.Item><Link to="/about">About</Link></Navbar.Item>
+        </Navbar.Container>
+      </Navbar.Menu>
     </Navbar>
   );
 }
