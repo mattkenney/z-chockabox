@@ -14,5 +14,9 @@ module.exports = {
     err:() => { throw new AuthenticationError('err!') }
   },
   Mutation: {
+    uploadDeck: (parent, args, context) => args.file.then(file => {
+      const { filename, mimetype,  encoding } = file;
+      return { filename, mimetype,  encoding };
+    })
   }
 };

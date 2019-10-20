@@ -10,6 +10,7 @@ import { Query } from 'react-apollo';
 import Decks from './views/Decks';
 import Errors from './components/Errors';
 import Login from './views/Login';
+import Upload from './views/Upload';
 import './App.sass';
 
 const query = gql`query{hello}`;
@@ -34,12 +35,12 @@ function Nav() {
   return (
     <Navbar>
       <Navbar.Brand>
-        <Navbar.Item><Link to="/">Chockabox</Link></Navbar.Item>
+        <Navbar.Item renderAs='span'><Link to="/">Chockabox</Link></Navbar.Item>
       </Navbar.Brand>
       <Navbar.Menu>
         <Navbar.Container>
-          <Navbar.Item><Link to="/deck">Decks</Link></Navbar.Item>
-          <Navbar.Item><Link to="/about">About</Link></Navbar.Item>
+          <Navbar.Item renderAs='span'><Link to="/deck">Decks</Link></Navbar.Item>
+          <Navbar.Item renderAs='span'><Link to="/about">About</Link></Navbar.Item>
         </Navbar.Container>
       </Navbar.Menu>
     </Navbar>
@@ -54,6 +55,7 @@ function Content() {
           <Route path="/about" component={About}/>
           <Route path="/deck" component={Decks}/>
           <Route path="/login" component={Login}/>
+          <Route path="/upload" component={Upload}/>
           <Route component={Home}/>
         </Switch>
       </Container>

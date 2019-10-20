@@ -27,8 +27,7 @@ app.use(require('cookie-session')(config.session));
 const sendToken = require('./auth')(app);
 
 // set up GraphQL
-const { ApolloServer } = require('apollo-server-express');
-const { makeExecutableSchema } = require('graphql-tools');
+const { ApolloServer, makeExecutableSchema } = require('apollo-server-express');
 const typeDefs = require('./typeDefs');
 const resolvers = require('./resolvers');
 resolvers.Mutation.sendToken = sendToken;

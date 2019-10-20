@@ -17,15 +17,22 @@ class FormImpl extends React.Component {
     for (let i = 0; i < elements.length; i++) {
       let element = elements[i];
       if (element.disabled || !element.name) continue;
-      variables[element.name] = element.value;
+      variables[element.name] = element.files ? element.files[0] : element.value;
     }
     this.props.mutate({ variables });
   }
 
   render() {
     const props = this.props;
+    const attr = {};
+    if (props.upload) attr.encType = 'multipart/form-data';
     return (
-      <form action={props.location.pathname} method='post' onSubmit={this.onSubmit}>
+      <form
+        action={props.location.pathname}
+        method='post'
+        onSubmit={this.onSubmit}
+        {...attr}
+        >
         {props.children(props.mutate, props.result)}
       </form>
     );
@@ -51,6 +58,7 @@ export default class MutationForm extends React.Component {
       if (!this.context._mutation_promise) {
         this.context._mutation_promise = new Promise(resolve => this.context._mutation_resolve = resolve);
       }
+console.log('body', this.context.body);
       mutate({ variables: this.context.body });
     }
     return mutate;
@@ -77,14 +85,14 @@ export default class MutationForm extends React.Component {
   }
 
   render() {
-    const { children, onCompleted, onError, ...rest } = this.props;
+    const { children, onCompleted, onError, upload, ...rest } = this.props;
     if (this.context._mutatation_result) {
       return children(null, this.context._mutatation_result);
     }
     return (
       <Mutation onCompleted={this.onCompleted} onError={this.onError} {...rest}>
         {(mutate, result) => (
-          <Form mutate={this.makeMutate(mutate)} result={result}>
+          <Form mutate={this.makeMutate(mutate)} result={result} upload={upload}>
             {children}
           </Form>
         )}

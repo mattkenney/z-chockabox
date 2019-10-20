@@ -1,6 +1,19 @@
 'use strict';
 
 module.exports = `
+  scalar Upload
+
+  type Deck {
+    id: ID!
+    name: String!
+  }
+
+  type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
+  }
+
   type Query {
     decks: [ Deck! ]!
 
@@ -10,10 +23,6 @@ module.exports = `
 
   type Mutation {
     sendToken(email: String!): String
-  }
-
-  type Deck {
-    id: ID!
-    name: String!
+    uploadDeck(file: Upload!): File!
   }
 `;
