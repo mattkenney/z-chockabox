@@ -41,6 +41,27 @@ const server = new ApolloServer({
 });
 server.applyMiddleware({ app, cors: false });
 
+// support multipart/form-data POST
+const multer  = require('multer');
+const upload = multer({ storage: multer.diskStorage({}), ...config.multer}).any();
+app.post('/upload', (req, res, next) => {
+  upload(req, res, () => {
+    req.files.forEach(file => {
+      req.body[file.fieldname] = Promise.resolve({
+        createReadStream: function () {
+          const result = fs.createReadStream(file.path);
+          fs.unlink(file.path, err => err && console.log(err));
+          return result;
+        },
+        encoding: file.encoding,
+        filename: file.originalname,
+        mimetype: file.mimetype
+      });
+    });
+    next();
+  });
+});
+
 // server-side render React app
 const fs = require('fs');
 const ssr = require('../dist/server-side-render').default;

@@ -58,7 +58,6 @@ export default class MutationForm extends React.Component {
       if (!this.context._mutation_promise) {
         this.context._mutation_promise = new Promise(resolve => this.context._mutation_resolve = resolve);
       }
-console.log('body', this.context.body);
       mutate({ variables: this.context.body });
     }
     return mutate;
