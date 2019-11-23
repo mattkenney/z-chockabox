@@ -33,7 +33,7 @@ class FormImpl extends React.Component {
         onSubmit={this.onSubmit}
         {...attr}
         >
-        {props.children(props.mutate, props.result)}
+        {props.children(props.result)}
       </form>
     );
   }
@@ -56,7 +56,8 @@ export default class MutationForm extends React.Component {
         loading: true
       };
       if (!this.context._mutation_promise) {
-        this.context._mutation_promise = new Promise(resolve => this.context._mutation_resolve = resolve);
+        this.context._mutation_promise = new Promise(resolve =>
+            this.context._mutation_resolve = resolve);
       }
       mutate({ variables: this.context.body });
     }
@@ -86,7 +87,7 @@ export default class MutationForm extends React.Component {
   render() {
     const { children, onCompleted, onError, upload, ...rest } = this.props;
     if (this.context._mutatation_result) {
-      return children(null, this.context._mutatation_result);
+      return children(this.context._mutatation_result);
     }
     return (
       <Mutation onCompleted={this.onCompleted} onError={this.onError} {...rest}>

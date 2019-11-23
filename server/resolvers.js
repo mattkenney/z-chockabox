@@ -11,12 +11,10 @@ module.exports = {
     },
 
     hello: () => 'World',
-    err:() => { throw new AuthenticationError('err!') }
+    err: () => { throw new AuthenticationError('err!') }
   },
   Mutation: {
-    uploadDeck: (parent, args, context) => args.file.then(file => {
-      const { filename, mimetype,  encoding } = file;
-      return { filename, mimetype,  encoding };
-    })
+    uploadDeck: (parent, args, context) =>
+        args.file.then(file => deck.create(file.createReadStream()).then(() => file))
   }
 };
