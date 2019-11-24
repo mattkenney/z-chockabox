@@ -23,6 +23,6 @@ module.exports = `
 
   type Mutation {
     sendToken(email: String!): String
-    uploadDeck(file: Upload!): File!
+    uploadDeck(name: String!, file: Upload!): File!
   }
 `;

@@ -4,10 +4,14 @@ const crypto = require('crypto');
 
 const CassandraStore = require('passwordless-cassandra-store');
 const EmailValidator = require("email-validator");
+const anyBase = require('any-base');
 const email = require("emailjs");
 const passwordless = require('passwordless');
+const shortUuid = require('short-uuid');
 
 const config = require('../config.json').auth;
+
+const flickrBase58 = anyBase(anyBase.HEX, shortUuid.constants.flickrBase58);
 
 const smtp = email.server.connect(config.smtp);
 
@@ -31,7 +35,7 @@ passwordless.addDelivery(function (token, uid, to, callback, req) {
 const requestToken = passwordless.requestToken((user, delivery, callback) => {
     const hmac = user && crypto.createHmac(config.hmac.algorithm, config.hmac.key);
     if (hmac) hmac.update(user);
-    const uid = hmac && hmac.digest('hex');
+    const uid = hmac && flickrBase58(hmac.digest('hex'));
     callback(null, uid ? uid : null);
   });
 

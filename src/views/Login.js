@@ -2,6 +2,7 @@ import React from 'react';
 
 import gql from 'graphql-tag';
 import Button from 'react-bulma-components/lib/components/button';
+import Notification from 'react-bulma-components/lib/components/notification';
 import { Field, Control, Label, Input } from 'react-bulma-components/lib/components/form';
 
 import Errors from '../components/Errors';
@@ -11,11 +12,11 @@ const SEND_TOKEN = gql`mutation sendToken($email: String!) { sendToken(email: $e
 
 export default function Login() {
   return (
-    <MutationForm mutation={SEND_TOKEN}>{(mutate, { loading, error, data }) => {
+    <MutationForm mutation={SEND_TOKEN}>{({ loading, error, data }) => {
       if (loading) return null;
       if (error) return <Errors error={error}/>;
       if (data) return <LoginSent data={data}/>;
-      return <LoginForm mutate={mutate}/>;
+      return <LoginForm/>;
     }}</MutationForm>
   );
 }
@@ -28,7 +29,8 @@ class LoginForm extends React.Component {
 
   render() {
     return (
-      <div>
+      <>
+        <Notification>Enter your email address and we will send you a link to sign in.</Notification>
         <Field>
           <Label>Email Address</Label>
           <Control>
@@ -42,7 +44,7 @@ class LoginForm extends React.Component {
           </Control>
         </Field>
         <Button color='primary' type='submit'>Send Login Link</Button>
-      </div>
+      </>
     );
   }
 }

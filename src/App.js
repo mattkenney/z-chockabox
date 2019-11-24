@@ -3,32 +3,19 @@ import React from 'react';
 import Container from 'react-bulma-components/lib/components/container';
 import Navbar from 'react-bulma-components/lib/components/navbar';
 import Section from 'react-bulma-components/lib/components/section';
-import gql from 'graphql-tag';
 import { Link, Route, Switch } from 'react-router-dom';
-import { Query } from 'react-apollo';
 
 import Decks from './views/Decks';
-import Errors from './components/Errors';
 import Login from './views/Login';
 import Upload from './views/Upload';
 import './App.sass';
-
-const query = gql`query{hello}`;
 
 function About() {
     return <div>{'About'}</div>;
 }
 
 function Home() {
-  return (
-    <Query query={query}>
-      {({ loading, error, data }) => {
-        if (error) return <Errors error={error}/>;
-        if (loading || !data) return null;
-        return <div>{`Hello ${data.hello}!`}</div>;
-      }}
-    </Query>
-  );
+    return <div>Welcome!</div>;
 }
 
 function Nav() {

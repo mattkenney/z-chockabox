@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS decks (
 CREATE TABLE IF NOT EXISTS cards (
   cid text,
   did text,
-  rand int,
+  rand float,
   last timestamp,
   next timestamp,
   question text,
